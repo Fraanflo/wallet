@@ -9,6 +9,7 @@ public class AlkeWalletApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(AlkeWalletApplication.class, args);
+		/*
 		 String password = "1234";
 
 	        // Hash almacenado en la base de datos (obtenido al crear el usuario)
@@ -27,4 +28,6 @@ public class AlkeWalletApplication {
 	            System.out.println("La contraseña no coincide.");
 	        }
 	    }
+	    */
 	}
+}
