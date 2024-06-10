@@ -5,10 +5,10 @@ import java.sql.Timestamp;
 import lombok.Data;
 @Data
 public class Transaccion {
-private int transaccionId;
-private int senderUserId;
-private int receiverUserId;
+private int transaction_Id;
+private int sender_User_Id;
+private int receiver_User_Id;
 private int valor;
-private Timestamp transactionDate;
-private int currencyId;
+private Timestamp transaction_Date;
+private int currency_Id;
 }

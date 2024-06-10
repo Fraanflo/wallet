@@ -12,4 +12,5 @@ public interface UsuarioService {
 	Usuario getById(int user_id);
 	public Usuario getByUsername(String correo) ;
 	List<Usuario> listado();
+	public int obtenerSaldoUsuario(String correo);
 }

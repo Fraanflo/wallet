@@ -9,6 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+  
    <style>
         body {
             background-color: #007bff;
@@ -49,30 +51,49 @@
 <body>
     <div class="container text-center">
         <header>
-            <h1>Menú</h1>
-            <h1 class="text-center">¡Bienvenido, <c:out value="${usuario.nombre}" />!</h1>
-             <h2 class="text-center">Saldo Actual: <c:out value="${usuario.saldo}" /></h2>
+          <c:if test="${realizada}">
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+                <script>
+                    Swal.fire({
+                        title: '¡Éxito!',
+                        text: 'Transferencia realizada exitosamente',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+                </script>
+            </c:if>
+        
+        <h1>Menú</h1>
+        <h1 class="text-center">¡Bienvenido, <c:out value="${usuario.nombre}" />!</h1>
+        <h2 class="text-center">Saldo Actual: <c:out value="${usuario.saldo}" /></h2>
             
-            <div class="text-center">
-                <h3 class="text-center">¿Qué deseas hacer?</h3>
-            </div>
+        <div class="text-center">
+            <h3 class="text-center">¿Qué deseas hacer?</h3>
+        </div>
         </header>
        
         <form action="menu-usuario" method="post">
-           
             <div class="d-grid gap-2 col-6 mx-auto">
-                <button class="btn btn-primary" type="submit" name="accion" value="depositar">Depositar</button>
-                <button class="btn btn-primary" type="submit" name="accion" value="retirar">Retirar</button>
-                <button class="btn btn-primary" type="submit" name="accion" value="transferir">Transferir</button>
-                <div class="text-center">
-                        <a href="<c:url value='/logout'/>" class="btn btn-secondary">Cerrar Sesión</a>
-                    </div>
+                <a href="<c:url value='/depositar'/>" class="btn btn-primary">Depositar</a>
+                <a href="<c:url value='/retirar'/>" class="btn btn-primary">Retirar</a>
+                <a href="<c:url value='/transferir'/>" class="btn btn-primary">Transferir a un tercero</a>
             </div>
         </form>
+        
+        <div class="text-center mt-4">
+            <a href="<c:url value='/historial'/>" class="btn btn-info">Ver Historial de Transacciones</a>
+        </div>
+        
+        <br>
+        
+        <div class="text-center">
+            <a href="<c:url value='/logout'/>" class="btn btn-secondary">Cerrar Sesión</a>
+        </div>
     </div>
-
+    
     <footer>
         <p>&copy; 2024, Billetera Digital. Todos los derechos reservados.</p>
     </footer>
+    
 </body>
 </html>

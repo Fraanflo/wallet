@@ -136,7 +136,6 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		 try {
-		        log.debug("Intentando cargar usuario con correo: " + username);
 		        UsuarioEntity usuario = usuarioRepository.findByUsername(username);
 		        
 		        if (usuario != null) {
@@ -170,8 +169,18 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 		usuario.setUser_Id(usuarioEntity.getUserId());
 		usuario.setNombre(usuarioEntity.getNombre());
 		usuario.setCorreo(usuarioEntity.getUsername());
+		usuario.setSaldo(usuarioEntity.getSaldo());
 		return usuario;
 	}
 
+	@Override
+	public int obtenerSaldoUsuario(String correo) {
+		    UsuarioEntity usuario = usuarioRepository.findByUsername(correo);
+		    if (usuario != null) {
+		        return usuario.getSaldo();
+		    } else {
+		        throw new IllegalArgumentException("El usuario no existe");
+		    }
 
+	}
 }
