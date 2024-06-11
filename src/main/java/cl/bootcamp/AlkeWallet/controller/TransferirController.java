@@ -84,7 +84,7 @@ public class TransferirController {
 
 		// Realizar la transferencia
 		transaccionService.transferir(usuario.getCorreo(), receiverUserId, valor);
-		redirectAttributes.addFlashAttribute("alertaTitulo", "Success");
+		redirectAttributes.addFlashAttribute("alertaTitulo", "Éxito");
 
 		redirectAttributes.addFlashAttribute("alertaMensaje", "La transferencia se ha realizado correctamente.");
 		redirectAttributes.addFlashAttribute("alertaTipo", TipoAlerta.SUCCESS);
