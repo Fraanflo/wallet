@@ -1,8 +1,7 @@
 package cl.bootcamp.AlkeWallet.service.impl;
 
-import java.util.ArrayList; 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -19,6 +18,9 @@ import cl.bootcamp.AlkeWallet.repository.UsuarioRepository;
 import cl.bootcamp.AlkeWallet.service.UsuarioService;
 import lombok.extern.apachecommons.CommonsLog;
 
+/**
+ * Implementación del servicio de usuario.
+ */
 @Service
 @CommonsLog
 public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
@@ -29,6 +31,9 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 		this.usuarioRepository = usuarioRepository;
 	}
 
+	/**
+	 * Crea un nuevo usuario.
+	 */
 	@Override
 	@Transactional
 	public int crear(Usuario usuario) {
@@ -52,47 +57,9 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 		}
 	}
 
-	@Override
-	public int editar(Usuario usuario) {
-		try {
-
-			Optional<UsuarioEntity> usuarioEntityGuardadoOptional = usuarioRepository.findById(usuario.getUser_Id());
-
-			if (usuarioEntityGuardadoOptional.isEmpty())
-				return -1;
-
-			UsuarioEntity usuarioEntityGuardado = usuarioEntityGuardadoOptional.get();
-
-			usuarioEntityGuardado.setNombre(usuario.getNombre());
-			usuarioEntityGuardado.setUsername(usuario.getCorreo());
-			if (usuario.getClave() != null && !usuario.getClave().isEmpty()) {
-				String hashPass = new BCryptPasswordEncoder().encode(usuario.getClave());
-				usuarioEntityGuardado.setPassword(hashPass);
-			}
-
-			UsuarioEntity usuarioGuardado = usuarioRepository.save(usuarioEntityGuardado);
-
-			return usuarioGuardado.getUserId();
-		} catch (Exception ex) {
-			log.error(ex.getMessage());
-			throw ex;
-		}
-	}
-
-	@Override
-	public Usuario getByCorreo(String correo) {
-		UsuarioEntity usuarioEntity = usuarioRepository.findByUsername(correo);
-		if (usuarioEntity == null)
-			return null;
-
-		Usuario usuario = new Usuario();
-		usuario.setUser_Id(usuarioEntity.getUserId());
-		usuario.setNombre(usuarioEntity.getNombre());
-		usuario.setCorreo(usuarioEntity.getUsername());
-
-		return usuario;
-	}
-
+	/**
+	 * Obtiene un usuario por su id
+	 */
 	@Override
 	public Usuario getById(int user_id) {
 		UsuarioEntity usuarioEntity = usuarioRepository.findById(user_id).orElse(null);
@@ -107,6 +74,9 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 		return usuario;
 	}
 
+	/**
+	 * Obtiene una lista de todos los usuarios
+	 */
 	@Override
 	public List<Usuario> listado() {
 		try {
@@ -131,41 +101,45 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 		}
 	}
 
-	
-
+	/**
+	 * Carga un usuario por su nombre de usuario (correo) para la autenticación de
+	 * Spring Security.
+	 */
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		 try {
-		        UsuarioEntity usuario = usuarioRepository.findByUsername(username);
-		        
-		        if (usuario != null) {
-		            List<GrantedAuthority> permissions = new ArrayList<>();
-		            return new User(usuario.getUsername(), usuario.getPassword(), permissions) {
-		            	/**
-						 * 
-						 */
-						private static final long serialVersionUID = 1L;
+		try {
+			// Buscar el usuario por su nombre de usuario (correo electrónico)
 
-						public String getNombre() {
-		                    return usuario.getNombre();
-		            }
-		            };
-		        } else {
-		            log.debug("Usuario no encontrado con el correo electrónico: " + username);
-		            throw new UsernameNotFoundException("Usuario no encontrado con el correo electrónico: " + username);
-		        }
-		    } catch (Exception ex) {
-		        log.error("Error al cargar usuario por nombre de usuario: " + ex.getMessage());
-		        throw new UsernameNotFoundException("Error al cargar usuario por nombre de usuario", ex);
-		    }
+			UsuarioEntity usuario = usuarioRepository.findByUsername(username);
+
+			if (usuario != null) {
+				// Construir los detalles del usuario para la autenticación de Spring Security
+				List<GrantedAuthority> permissions = new ArrayList<>();
+				return new User(usuario.getUsername(), usuario.getPassword(), permissions) {
+
+				};
+			} else {
+				// Si no se encuentra el usuario, lanzar una excepción
+				log.debug("Usuario no encontrado con el correo electrónico: " + username);
+				throw new UsernameNotFoundException("Usuario no encontrado con el correo electrónico: " + username);
+			}
+			// En caso de error, registrar el error y lanzar una excepción
+		} catch (Exception ex) {
+			log.error("Error al cargar usuario por nombre de usuario: " + ex.getMessage());
+			throw new UsernameNotFoundException("Error al cargar usuario por nombre de usuario", ex);
 		}
+	}
 
+	/**
+	 * Obtiene un usuario por su nombre de usuario (correo electrónico).
+	 */
 	@Override
 	public Usuario getByUsername(String correo) {
-		UsuarioEntity usuarioEntity=  usuarioRepository.findByUsername(correo);
-		if(usuarioEntity== null) return null;
-		
-		Usuario usuario= new Usuario();
+		UsuarioEntity usuarioEntity = usuarioRepository.findByUsername(correo);
+		if (usuarioEntity == null)
+			return null;
+
+		Usuario usuario = new Usuario();
 		usuario.setUser_Id(usuarioEntity.getUserId());
 		usuario.setNombre(usuarioEntity.getNombre());
 		usuario.setCorreo(usuarioEntity.getUsername());
@@ -173,14 +147,17 @@ public class UsuarioServiceImpl implements UsuarioService, UserDetailsService {
 		return usuario;
 	}
 
+	/**
+	 * Obtiene el saldo de un usuario por su nombre de usuario (correo).
+	 */
 	@Override
 	public int obtenerSaldoUsuario(String correo) {
-		    UsuarioEntity usuario = usuarioRepository.findByUsername(correo);
-		    if (usuario != null) {
-		        return usuario.getSaldo();
-		    } else {
-		        throw new IllegalArgumentException("El usuario no existe");
-		    }
+		UsuarioEntity usuario = usuarioRepository.findByUsername(correo);
+		if (usuario != null) {
+			return usuario.getSaldo();
+		} else {
+			throw new IllegalArgumentException("El usuario no existe");
+		}
 
 	}
 }

@@ -3,6 +3,9 @@ package cl.bootcamp.AlkeWallet.model;
 import java.sql.Timestamp;
 
 import lombok.Data;
+/**
+ * clase model que representa una Transaccion
+ */
 @Data
 public class Transaccion {
 private int transaction_Id;

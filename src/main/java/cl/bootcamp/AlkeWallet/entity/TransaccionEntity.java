@@ -10,6 +10,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
 
+/**
+ * Entidad que representa una transacción en la bd
+ */
 @Entity
 @Table(name="transaccion")
 @Data

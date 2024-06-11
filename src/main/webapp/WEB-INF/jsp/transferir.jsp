@@ -19,7 +19,7 @@ body {
 
 
 .container {
-
+     padding: 20px 200px;
     justify-content: center;
     align-items: center;
     background-color: white;
@@ -34,27 +34,31 @@ body {
          <form action="/transferir" method="post">
             <div class="mb-3">
                 <label for="receiverUserId" class="form-label">ID del Destinatario:</label>
-                <input type="text" id="receiverUserId" name="receiverUserId" class="form-control">
+                <input type="number" id="receiverUserId" name="receiverUserId" class="form-control">
             </div>
             <div class="mb-3">
                 <label for="valor" class="form-label">Monto:</label>
-                <input type="text" id="valor" name="valor" class="form-control">
+                <input type="number" id="valor" name="valor" class="form-control" required>
             </div>
             
-      <c:if test="${not empty alertaTitulo}">
      
-            <script>
-                Swal.fire({
-                    icon: '${alertaTipo == 'WARNING' ? 'warning' : alertaTipo.toLowerCase()}',
-                	 title: '<c:out value="${alertaTitulo}" />',
-                    text: '<c:out value="${alertaMensaje}" />',
-                    confirmButtonText: 'OK'
-                });
-            </script>
-        </c:if>
+             <script>
+        // Obtener los mensajes de alerta 
+        const alertaTitulo = '<%= (request.getAttribute("alertaTitulo") != null) ? request.getAttribute("alertaTitulo") : "" %>';
+        const alertaMensaje = '<%= (request.getAttribute("alertaMensaje") != null) ? request.getAttribute("alertaMensaje") : "" %>';
+        const alertaTipo = '<%= (request.getAttribute("alertaTipo") != null) ? request.getAttribute("alertaTipo") : "" %>';
+
+        if (alertaTitulo && alertaMensaje && alertaTipo) {
+            Swal.fire({
+                title: alertaTitulo,
+                text: alertaMensaje,
+                icon: alertaTipo.toLowerCase() 
+            });
+        }
+    </script>
 
             <button type="submit" class="btn btn-primary">Transferir</button>
-             <a href="<c:url value='/home'/>" class="btn btn-primary">Volver al Menú</a>
+             <a href="<c:url value='/home'/>" class="btn btn-secondary">Volver al Menú</a>
             
         </form>
     </div>

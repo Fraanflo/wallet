@@ -9,8 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
    <style>
         body {
             background-color: #007bff;
@@ -50,14 +50,16 @@
 </head>
 <body>
     <div class="container text-center">
-        <header>
-          <c:if test="${realizada}">
-                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+           <c:if test="${not empty alertaTitulo}">
                 <script>
+                    const alertaTitulo = '${alertaTitulo}';
+                    const alertaMensaje = '${alertaMensaje}';
+                    const alertaTipo = '${alertaTipo}'.toLowerCase();
+
                     Swal.fire({
-                        title: '¡Éxito!',
-                        text: 'Transferencia realizada exitosamente',
-                        icon: 'success',
+                        title: alertaTitulo,
+                        text: alertaMensaje,
+                        icon: alertaTipo,
                         confirmButtonText: 'OK'
                     });
                 </script>
@@ -70,7 +72,6 @@
         <div class="text-center">
             <h3 class="text-center">¿Qué deseas hacer?</h3>
         </div>
-        </header>
        
         <form action="menu-usuario" method="post">
             <div class="d-grid gap-2 col-6 mx-auto">

@@ -3,6 +3,10 @@ package cl.bootcamp.AlkeWallet.model;
 import java.sql.Timestamp;
 
 import lombok.Data;
+
+/**
+ * Clase model que representa a un usuario.
+ */
 @Data
 public class Usuario {
 private int user_Id;
